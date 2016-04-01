@@ -1,0 +1,130 @@
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'maven-publish'
+def libVersion = '0.0.11'
+version = libVersion
+
+ext {
+    bintrayRepo = 'library'
+    bintrayName = 'Calendar'
+
+    publishedGroupId = 'com.devs.shoki.calendarpicker'
+    libraryName = 'Calendar'
+    artifact = 'Calendar'
+
+    libraryDescription = '테스트 업로드'
+
+    siteUrl = 'https://github.com/leeminsuek/CalendarPicker'
+    gitUrl = 'https://github.com/leeminsuek/CalendarPicker.git'
+
+    libraryVersion = '1.0'
+
+    developerId = 'minseok'
+    developerName = 'minseok'
+    developerEmail = 'a01050335943@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+//        applicationId 'com.devs.shoki.calendarpicker'
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.1.1'
+}
+
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+def siteUrl = 'https://github.com/leeminsuek/CalendarPicker'      // Homepage URL of the library
+def gitUrl = 'https://github.com/leeminsuek/CalendarPicker.git'   // Git repository URL
+group = "com.devs.shoki.calendarpicker"                      // Maven Group ID for the artifact
+
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'jar'
+
+                // Add your description here
+                name 'Android Update Checker'
+                description = 'The project aims to provide a reusable instrument to check asynchronously if exists any newer released update of your Android app on the Store.'
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'minseok'
+                        name 'minseok'
+                        email 'a01050335943@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = "library"
+        name = "CalendarPicker"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+        version {
+            name = libVersion
+            vcsTag = libVersion
+        }
+    }
+}
