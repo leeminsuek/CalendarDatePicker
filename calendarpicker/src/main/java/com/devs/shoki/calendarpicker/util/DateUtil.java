@@ -1,7 +1,5 @@
 package com.devs.shoki.calendarpicker.util;
 
-import android.util.Log;
-
 import com.devs.shoki.calendarpicker.calendar.param.CalendarDayParams;
 
 import java.text.ParseException;
@@ -118,17 +116,14 @@ public class DateUtil {
 
         // aDate가 bDate보다 클 경우 출력
         if (aDate.after(bDate)) {
-            Log.d("diff", day1.getMonth() + "월" + day1.getDay() + "일 ////" + day2.getMonth() + "월" + day2.getDay() + "일 //// 더크네!");
             return -1;
         }
         // aDate가 bDate보다 작을 경우 출력
         else if (aDate.before(bDate)) {
-            Log.d("diff",  day1.getMonth() + "월" + day1.getDay() + "일 ////" +day2.getMonth() + "월" + day2.getDay() + "일 //// 더작네!");
             return 1;
         }
         // aDate = bDate인 경우
         else {
-            Log.d("diff",  day1.getMonth() + "월" + day1.getDay() + "일 ////" +day2.getMonth() + "월" + day2.getDay() + "일 //// 같네!");
             return 0;
         }
     }

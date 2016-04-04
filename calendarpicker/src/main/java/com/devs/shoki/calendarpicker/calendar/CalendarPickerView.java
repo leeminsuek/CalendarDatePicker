@@ -3,6 +3,7 @@ package com.devs.shoki.calendarpicker.calendar;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,6 @@ import com.devs.shoki.calendarpicker.constants.Config;
 import com.devs.shoki.calendarpicker.constants.MonthState;
 import com.devs.shoki.calendarpicker.listener.IDayClickListener;
 import com.devs.shoki.calendarpicker.util.DateUtil;
-import com.devs.shoki.calendarpicker.widget.DragSelectRecyclerView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class CalendarPickerView extends RelativeLayout {
 
-    private DragSelectRecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private Button selectBtn;
 
     private CalendarGridAdapter adapter;
@@ -61,10 +61,9 @@ public class CalendarPickerView extends RelativeLayout {
      * 날짜선택 완료 버튼 enabled 체크
      */
     private void checkSelecteDate() {
-        if(selectParamsMap.containsKey(Config.SELECT_LAST_DATE_KEY)) {
+        if (selectParamsMap.containsKey(Config.SELECT_LAST_DATE_KEY)) {
             selectBtn.setEnabled(true);
-        }
-        else {
+        } else {
             selectBtn.setEnabled(false);
         }
     }
@@ -77,8 +76,7 @@ public class CalendarPickerView extends RelativeLayout {
             params.setPickerFromToListener(null);
             params.setFirstDate(null);
             params.setLastDate(null);
-        } else if (params.getMode().equals(CalendarMode.FROM_TO) ||
-                params.getMode().equals(CalendarMode.FROM_TO_DRAG)) {
+        } else if (params.getMode().equals(CalendarMode.FROM_TO) || params.getMode().equals(CalendarMode.DRAG_SELECT)) {
             params.setPickerListener(null);
         }
     }
@@ -94,9 +92,9 @@ public class CalendarPickerView extends RelativeLayout {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        if(params.getStartDate() != null) {
+        if (params.getStartDate() != null) {
             CalendarDayParams dayParams = params.getStartDate();
-            calendar.set(dayParams.getYear(), dayParams.getMonth()-1, dayParams.getDay());
+            calendar.set(dayParams.getYear(), dayParams.getMonth() - 1, dayParams.getDay());
         }
     }
 
@@ -106,7 +104,7 @@ public class CalendarPickerView extends RelativeLayout {
     private void init() {
         View.inflate(getContext(), R.layout.picker_main, this);
 
-        recyclerView = (DragSelectRecyclerView) findViewById(R.id.picker_main_recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.picker_main_recyclerview);
         selectBtn = (Button) findViewById(R.id.picker_main_select_btn);
 
         cellParamsList = new ArrayList<>();
@@ -135,7 +133,7 @@ public class CalendarPickerView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if (params.getMode().equals(CalendarMode.FROM_TO)) {
+                if (params.getMode().equals(CalendarMode.FROM_TO) || params.getMode().equals(CalendarMode.DRAG_SELECT)) {
                     if (params.getPickerFromToListener() != null) {
                         params.getPickerFromToListener().onPickerFromToListener(dialog, selectParamsMap.get(Config.SELECT_FIRST_DATE_KEY), selectParamsMap.get(Config.SELECT_LAST_DATE_KEY));
                     }
@@ -154,29 +152,20 @@ public class CalendarPickerView extends RelativeLayout {
      */
     private void initRecyclerView() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 7, LinearLayoutManager.VERTICAL, false);
+        adapter = new CalendarGridAdapter(cellParamsList, selectParamsMap, params);
 
-        if(params.getMode().equals(CalendarMode.FROM_TO_DRAG)) {
-            adapter = new CalendarGridAdapter(cellParamsList, selectParamsMap, params, new CalendarGridAdapter.DragClickListener() {
-                @Override
-                public void onClick(int index) {
-                    adapter.toggleSelected(index);
-                }
-
-                @Override
-                public void onLongClick(int index) {
-                    recyclerView.setDragSelectActive(true, index);
-                }
-            });
+        if(params.getMode().equals(CalendarMode.DRAG_SELECT) || params.getMode().equals(CalendarMode.FROM_TO)) {
+            adapter.setOnDragListener(recyclerView, true);
         }
         else {
-            adapter = new CalendarGridAdapter(cellParamsList, selectParamsMap, params, null);
+            adapter.setOnDragListener(null, false);
         }
 
         adapter.setOnDayClickListener(new IDayClickListener() {
             @Override
             public void onDayClickListener(CalendarDayParams day, int position) {
                 Log.d("calendar", day.getYear() + "년" + day.getMonth() + "월" + day.getDay() + "일");
-                if (params.getMode().equals(CalendarMode.FROM_TO)) {
+                if (params.getMode().equals(CalendarMode.FROM_TO) || params.getMode().equals(CalendarMode.DRAG_SELECT)) {
                     if (selectParamsMap.containsKey(Config.SELECT_FIRST_DATE_KEY)) {
                         int diff = DateUtil.isDifferenceOfDay(selectParamsMap.get(Config.SELECT_FIRST_DATE_KEY), day);
                         Log.d("calendar", "diff = " + diff);

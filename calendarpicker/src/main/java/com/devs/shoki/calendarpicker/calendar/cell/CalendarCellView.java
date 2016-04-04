@@ -79,7 +79,7 @@ public class CalendarCellView extends RelativeLayout {
                 LayoutParams params = (LayoutParams) backgroundView.getLayoutParams();
                 params.addRule(CENTER_IN_PARENT, RelativeLayout.TRUE);
             }
-            else if(pickerParams.getMode().equals(CalendarMode.FROM_TO)) {
+            else if(pickerParams.getMode().equals(CalendarMode.FROM_TO) || pickerParams.getMode().equals(CalendarMode.DRAG_SELECT)) {
                 if(params.getSelectedState() == Config.SELECTED_FIRST_DATE) {
                     setBackgroundImage(backgroundView, pickerParams.getSelectedFirstDrawable());
                     LayoutParams params = (LayoutParams) backgroundView.getLayoutParams();

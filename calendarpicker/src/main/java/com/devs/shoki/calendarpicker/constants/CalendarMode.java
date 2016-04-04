@@ -7,7 +7,7 @@ public enum CalendarMode {
     DEFAULT(0),
     SELECT(1),
     FROM_TO(2),
-    FROM_TO_DRAG(3)
+    DRAG_SELECT(3)
     ;
     public int mode;
     CalendarMode(int mode) {

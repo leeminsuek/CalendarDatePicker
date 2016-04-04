@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         calendarPickerDialog = new CalendarPickerDialog.Builder(this)
                 .setStartDate(2001, 2,1)
                 .setOnPickerFromToListener(new IPickerFromToListener() {
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("calendar", from.getYear() + "" + from.getMonth() + "" + from.getDay() + " ~ " + to.getYear() + "" + to.getMonth() + "" + to.getDay());
                     }
                 })
-                .setSelectedMode(CalendarMode.FROM_TO)
+                .setSelectedMode(CalendarMode.DRAG_SELECT)
 //                .setSelectedMode(CalendarMode.SELECT)
 //                .setOnPickerListener(new IPickerListener() {
 //                    @Override

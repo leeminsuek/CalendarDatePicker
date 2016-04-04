@@ -3,32 +3,32 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 //apply plugin: 'maven-publish'
-def libVersion = '0.0.11'
+def libVersion = '0.0.14'
 version = libVersion
 
-ext {
-    bintrayRepo = 'library'
-    bintrayName = 'Calendar'
-
-    publishedGroupId = 'com.devs.shoki.calendarpicker'
-    libraryName = 'Calendar'
-    artifact = 'Calendar'
-
-    libraryDescription = '테스트 업로드'
-
-    siteUrl = 'https://github.com/leeminsuek/CalendarPicker'
-    gitUrl = 'https://github.com/leeminsuek/CalendarPicker.git'
-
-    libraryVersion = '1.0'
-
-    developerId = 'minseok'
-    developerName = 'minseok'
-    developerEmail = 'a01050335943@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
+//ext {
+//    bintrayRepo = 'library'
+//    bintrayName = 'Calendar'
+//
+//    publishedGroupId = 'com.devs.shoki.calendarpicker'
+//    libraryName = 'Calendar'
+//    artifact = 'Calendar'
+//
+//    libraryDescription = '테스트 업로드'
+//
+//    siteUrl = 'https://github.com/leeminsuek/CalendarPicker'
+//    gitUrl = 'https://github.com/leeminsuek/CalendarPicker.git'
+//
+//    libraryVersion = '1.0'
+//
+//    developerId = 'minseok'
+//    developerName = 'minseok'
+//    developerEmail = 'a01050335943@gmail.com'
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
 
 android {
     compileSdkVersion 23
@@ -116,6 +116,17 @@ bintray {
 
     configurations = ['archives']
     pkg {
+//        repo = 'myrepo'
+//        name = 'mypkg'
+//        userOrg = 'myorg' //An optional organization name when the repo belongs to one of the user's orgs
+//        desc = 'what a fantastic package indeed!'
+//        websiteUrl = 'https://github.com/bintray/gradle-bintray-plugin'
+//        issueTrackerUrl = 'https://github.com/bintray/gradle-bintray-plugin/issues'
+//        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+//        licenses = ['Apache-2.0']
+//        labels = ['gear', 'gore', 'gorilla']
+//        publicDownloadNumbers = true
+//        attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee'] //Optional package-level attributes
         repo = "library"
         name = "CalendarPicker"
         websiteUrl = siteUrl
@@ -124,7 +135,13 @@ bintray {
         publish = true
         version {
             name = libVersion
+//            desc = '';
             vcsTag = libVersion
+
+            gpg {
+                sign = true                                                 //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpgPassword")  //Optional. The passphrase for GPG signing'
+            }
         }
     }
 }

@@ -10,20 +10,20 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/picker_main_prev_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:id="@+id/picker_main_prev_btn"
             android:text="이전" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_toRightOf="@+id/picker_main_prev_btn"
-            android:layout_toLeftOf="@+id/picker_main_next_btn"
             android:id="@+id/picker_main_month_txtv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/picker_main_next_btn"
+            android:layout_toRightOf="@+id/picker_main_prev_btn"
+            android:gravity="center"
             android:text="월" />
 
         <Button
@@ -34,17 +34,19 @@
             android:text="다음" />
     </RelativeLayout>
 
-    <com.devs.shoki.calendarpicker.widget.DragSelectRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/picker_main_recyclerview"
-        android:layout_below="@+id/picker_main_topbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.devs.shoki.calendarpicker.widget.DragSelectRecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/picker_main_topbar">
+
+    </android.support.v7.widget.RecyclerView>
 
     <Button
         android:id="@+id/picker_main_select_btn"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_below="@+id/picker_main_recyclerview"
-        android:text="선택"
-        android:layout_height="50dp" />
+        android:text="선택" />
 
 </RelativeLayout>
